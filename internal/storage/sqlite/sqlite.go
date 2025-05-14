@@ -8,6 +8,8 @@ import (
 	// since sqlit3 will not be used directly so use _
 )
 
+// for postgres
+// make struct of postgres
 type Sqlite struct {
 	Db *sql.DB
 }
@@ -16,6 +18,7 @@ type Sqlite struct {
 // we use hack to get work of constructor
 // By convention we use New function for the constructor
 
+// implement storage interface for postgres ,if you want to use postgres
 func New(cfg *config.Config) (*Sqlite, error) {
 	db, err := sql.Open("sqlite3", cfg.StoragePath)
 

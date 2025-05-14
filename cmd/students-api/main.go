@@ -20,6 +20,7 @@ func main() {
 	// load config
 	cfg := config.MustLoad()
 	// database setup
+	// postgres.New(cfg)
 	storage_db, err := sqlite.New(cfg)
 	if err != nil {
 		log.Fatal(err)
