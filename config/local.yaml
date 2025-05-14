@@ -5,4 +5,4 @@ storage_path: "/storage/storage.sqlite"
 
 # server config
 http_server:
-  addr: "localhost:8082"
+  addr: "localhost:8848"
