@@ -23,7 +23,7 @@ import (
 // dependency will be injected here
 func New() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		slog.Info("creatinga student")
+		slog.Info("creating a student")
 		var student types.Student
 		err := json.NewDecoder(r.Body).Decode(&student)
 		if errors.Is(err, io.EOF) {
@@ -38,7 +38,9 @@ func New() http.HandlerFunc {
 		// validate request, follow zero trust policy
 		// use package /go-playground/validator
 		if err := validator.New().Struct(student); err != nil {
-			response.WriteJson(w, http.StatusBadRequest)
+			validateErrs := err.(validator.ValidationErrors)
+			response.WriteJson(w, http.StatusBadRequest, response.ValidationError(validateErrs))
+			return
 		}
 		// decode information //searilize
 		// w.Write([]byte("Welcome to students api")).
