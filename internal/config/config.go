@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/SecureParadise/students-api/internal/config"
 	"github.com/ilyakaznacheev/cleanenv"
 )
 
@@ -15,7 +14,7 @@ type HTTPServer struct {
 type Config struct {
 	// struct tag
 	// `yaml:"enev" env:"ENV" env-required:"true"`
-	Env         string `yaml:"enev" env:"ENV" env-required:"true"` //env-default:"production"
+	Env         string `yaml:"env" env:"ENV" env-required:"true"` //env-default:"production"
 	StoragePath string `yaml:"storage_path" env-required:"true"`
 	HTTPServer  `yaml:"http_server"`
 }
