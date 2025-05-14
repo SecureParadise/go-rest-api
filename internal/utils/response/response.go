@@ -6,8 +6,8 @@ import (
 )
 
 type Response struct {
-	Status string
-	Error  string
+	Status string `json:"status"`
+	Error  string `json:"error"`
 }
 
 const (
@@ -29,3 +29,5 @@ func GeneralError(err error) Response {
 		Error:  err.Error(),
 	}
 }
+
+func ValidationError() {}
