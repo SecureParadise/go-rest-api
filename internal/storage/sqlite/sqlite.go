@@ -2,8 +2,10 @@ package sqlite
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/SecureParadise/students-api/internal/config"
+	"github.com/SecureParadise/students-api/internal/types"
 	_ "github.com/mattn/go-sqlite3"
 	// since sqlit3 will not be used directly so use _
 )
@@ -58,3 +60,20 @@ func (s *Sqlite) CreateStudent(name string, email string, age int) (uint64, erro
 
 // neeed sqlite driver
 // go get github.com/mattn/go-sqlite3
+
+func (s *Sqlite) GetStudentById(id int64) (types.Student, error) {
+	stmt, err := s.Db.Prepare("SELECT id,name,email,age FROM students WHERE id = ? LIMIT 1")
+	if err != nil {
+		return types.Student{}, err
+	}
+	defer stmt.Close()
+	var student types.Student
+	err = stmt.QueryRow(id).Scan(&student.Id, &student.Name, &student.Email, &student.Age)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return types.Student{}, fmt.Errorf("no student found with id %d", id)
+		}
+		return types.Student{}, fmt.Errorf("Query error: %w", err)
+	}
+	return student, nil
+}
