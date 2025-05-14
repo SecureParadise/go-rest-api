@@ -8,6 +8,7 @@ import (
 	"log/slog"
 	"net/http"
 
+	"github.com/SecureParadise/students-api/internal/storage"
 	"github.com/SecureParadise/students-api/internal/types"
 	"github.com/SecureParadise/students-api/internal/utils/response"
 	"github.com/go-playground/validator/v10"
@@ -21,7 +22,8 @@ import (
 // })
 
 // dependency will be injected here
-func New() http.HandlerFunc {
+// use interface storage
+func New(storage storage.Storage) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		slog.Info("creating a student")
 		var student types.Student

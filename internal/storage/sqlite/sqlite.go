@@ -22,10 +22,10 @@ func New(cfg *config.Config) (*Sqlite, error) {
 	if err != nil {
 		return nil, err
 	}
-	_, err = db.Exec(`CREATE TABLE IN NOT EXIST students(
-	id INTEGER PRIMARYKEY AUTOINCREMENT
-	name TEXT
-	email TEXT
+	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS students(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name TEXT,
+	email TEXT,
 	age INTEGER)`)
 	if err != nil {
 		return nil, err
@@ -33,6 +33,24 @@ func New(cfg *config.Config) (*Sqlite, error) {
 	return &Sqlite{
 		Db: db,
 	}, nil
+}
+
+func (s *Sqlite) CreateStudent(name string, email string, age int) (uint64, error) {
+	// use (?,?,?) for prevention of sqlite injection
+	stmt, err := s.Db.Prepare("INSERT INTO students (name,email,age) VALUES(?,?,?)")
+	if err != nil {
+		return 0, err
+	}
+	defer stmt.Close()
+	result, err := stmt.Exec(name, email, age)
+	if err != nil {
+		return 0, err
+	}
+	lastId, err := result.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+	return uint64(lastId), nil
 }
 
 // neeed sqlite driver
