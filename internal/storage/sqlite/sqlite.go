@@ -61,14 +61,14 @@ func (s *Sqlite) CreateStudent(name string, email string, age int) (uint64, erro
 // neeed sqlite driver
 // go get github.com/mattn/go-sqlite3
 
-func (s *Sqlite) GetStudentById(id int64) (types.Student, error) {
+func (s *Sqlite) GetStudentById(id uint64) (types.Student, error) {
 	stmt, err := s.Db.Prepare("SELECT id,name,email,age FROM students WHERE id = ? LIMIT 1")
 	if err != nil {
 		return types.Student{}, err
 	}
 	defer stmt.Close()
 	var student types.Student
-	err = stmt.QueryRow(id).Scan(&student.Id, &student.Name, &student.Email, &student.Age)
+	err = stmt.QueryRow(int64(id)).Scan(&student.Id, &student.Name, &student.Email, &student.Age)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return types.Student{}, fmt.Errorf("no student found with id %d", id)

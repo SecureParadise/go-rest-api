@@ -69,7 +69,7 @@ func GetStudentById(storage storage.Storage) http.HandlerFunc {
 		intId, err := strconv.ParseInt(id, 10, 64)
 		if err != nil {
 			response.WriteJson(w, http.StatusBadRequest, response.GeneralError(err))
-
+			return
 		}
 		student, err := storage.GetStudentById(uint64(intId))
 		if err != nil {
