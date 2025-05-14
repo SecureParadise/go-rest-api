@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/SecureParadise/students-api/internal/config"
+	"github.com/SecureParadise/students-api/internal/http/handlers/student"
 )
 
 func main() {
@@ -20,9 +21,12 @@ func main() {
 	// database setup
 	// sertup router
 	router := http.NewServeMux()
-	router.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Welcome to student api"))
-	})
+	// router.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
+	// 	w.Write([]byte("Welcome to student api"))
+	// })
+
+	// router.HandleFunc("GET /api/students", student.New())
+	router.HandleFunc("POST /api/students", student.New())
 
 	// sertup server
 	server := http.Server{
@@ -32,7 +36,7 @@ func main() {
 	// fmt.Printf("server started http://%s", cfg.HTTPServer.Addr)
 	slog.Info("server started ", slog.String("URL", "http://"+cfg.HTTPServer.Addr))
 
-	// graceful shutdown
+	// graceful server shutdown
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
