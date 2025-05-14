@@ -1,0 +1,8 @@
+env: "dev"
+
+# data base path
+storage_path: "./storage/storage.sqlite"
+
+# server config
+http_server:
+  address:"localhost:8848"
