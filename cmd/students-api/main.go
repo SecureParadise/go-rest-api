@@ -35,6 +35,7 @@ func main() {
 
 	// router.HandleFunc("GET /api/students", student.New())
 	router.HandleFunc("POST /api/students", student.New(storage_db))
+	router.HandleFunc("GET /api/students/{id}", student.GetStudentById(storage_db))
 
 	// sertup server
 	server := http.Server{
